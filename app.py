@@ -13,7 +13,7 @@ def home():
 # Correct photo with CNN and return result as JPG, PNG, etc
 @app.route('/correct', methods=['POST'])
 def correct_photo():
-    content = request.get('json')
+    content = flask.request.args.get('json')
 
     if content:
         if content.get('photo') and content.get('photo') != '':
