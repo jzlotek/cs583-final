@@ -31,8 +31,8 @@ def correct_photo():
     else:
         return json.dumps('{photo: [], code: 400}')
 
-
-PORT = os.argv.get('PORT') if os.argv.get('PORT') else 8080
+env = os.environ
+PORT = env.get('PORT') if env.get('PORT') else 8080
 
 app.run(host="0.0.0.0", port=PORT, debug=True)
 
