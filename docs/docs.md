@@ -28,7 +28,7 @@ our goal is to enable the potential of this solution to truly be explored.
 ## Requirements
 
 - Improve existing implementation by:
-  - `python2` $\rightarrow$ `python3`
+  - `python2` -> `python3`
   - More extensible code (remove hard coded paths eg. program arguments etc.)
   - Reduce memory overhead (we do not have 64-128GB of RAM available)
     - Use JPEG instead of RAW for inputs (may lower quality of output but makes training easier)
