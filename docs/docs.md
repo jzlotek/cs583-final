@@ -1,14 +1,3 @@
----
-title: 'Improving "Learning to See in the Dark"'
----
-
-| Name         | Id    | email            |
-| ------------ | ----- | ---------------- |
-| John Zlotek  | jmz46 | [jmz46@drexel.edu](mailto:jmz46@drexel.edu) |
-| Joseph Hines | jth95 | [jth95@drexel.edu](mailto:jth95@drexel.edu) |
-
-\newpage
-
 ## Relevant Paper
 
 https://cs.nyu.edu/~fergus/papers/zeilerECCV2014.pdf

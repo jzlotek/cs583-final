@@ -371,4 +371,10 @@ dmypy.json
 *.sass.map
 *.scss.map
 
+# Additional
+
+proposal
+proposal*
+*proposal*
+
 
