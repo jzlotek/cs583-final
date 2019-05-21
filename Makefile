@@ -11,4 +11,4 @@ proposal:
 	pandoc -f markdown -t latex -o docs/proposal.pdf docs/proposal.md
 
 clean-docs:
-	-@ rm docs/proposal.md docs/proposal.pdf docs/index.md
+	-@ rm docs/proposal.md docs/proposal.pdf
