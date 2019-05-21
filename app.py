@@ -1,3 +1,4 @@
+import os
 import flask
 import json
 from flask import send_from_directory
@@ -30,5 +31,8 @@ def correct_photo():
     else:
         return json.dumps('{photo: [], code: 400}')
 
-app.run(host="0.0.0.0", port=8080, debug=True)
+
+PORT = os.argv.get('PORT') if os.argv.get('PORT') else 8080
+
+app.run(host="0.0.0.0", port=PORT, debug=True)
 
