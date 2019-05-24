@@ -1,4 +1,4 @@
-.PHONY: pages proposal clean-docs
+.PHONY: pages proposal clean-docs run-webapp
 
 pages:
 	cat docs/pages.head > docs/index.md
@@ -12,3 +12,6 @@ proposal:
 
 clean-docs:
 	-@ rm docs/proposal.md docs/proposal.pdf
+
+run-webapp:
+	python src/app.py
