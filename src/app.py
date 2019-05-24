@@ -1,7 +1,9 @@
 import os
+import io
 import flask
 import json
-from flask import send_from_directory
+import zipfile
+from flask import send_from_directory, send_file
 
 app = flask.Flask(__name__)
 
@@ -17,6 +19,7 @@ def correct_photo():
 
     if content:
         if content.get('photo') and content.get('photo') != '':
+            mimetype = 'image/jpg'
             photos = content.get('photo')
 
             if type(photos) == str:
@@ -25,7 +28,23 @@ def correct_photo():
             # CNN
 
             # TODO: return CNN output pictures
-            return None
+
+            if len(photos) > 1:
+                mimetype='application/zip'
+                zip_io = io.BytesIO() 
+
+                zf = zipfile.ZipFile(zip_io, 'w')
+
+                for img, i in enumerate(photos):
+                    zf.write(i, img)
+
+                zf.close()
+
+                return send_file(zip_io, mimetype=mimetype)
+
+
+            #'application/zip'
+            return send_file(None, mimetype=mimetype)
         else: # error, return error code 400
             return json.dumps('{photo: [], code: 400}')
     else:

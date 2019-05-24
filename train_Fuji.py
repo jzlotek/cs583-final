@@ -6,10 +6,12 @@ import numpy as np
 import rawpy
 import glob
 
+# Constants
 input_dir = './dataset/Fuji/short/'
 gt_dir = './dataset/Fuji/long/'
 checkpoint_dir = './result_Fuji/'
 result_dir = './result_Fuji/'
+IMGS_TO_LOAD = 6
 
 # get train IDs
 train_fns = glob.glob(gt_dir + '0*.RAF')
@@ -142,7 +144,7 @@ if ckpt:
     saver.restore(sess, ckpt.model_checkpoint_path)
 
 # Raw data takes long time to load. Keep them in memory after loaded.
-gt_images = [None] * 6000
+gt_images = [None] * IMGS_TO_LOAD
 in_images = {}
 in_images['300'] = [None] * len(train_ids)
 in_images['250'] = [None] * len(train_ids)
@@ -220,8 +222,19 @@ for epoch in range(lastepoch, 4001):
             if not os.path.isdir(result_dir + '%04d' % epoch):
                 os.makedirs(result_dir + '%04d' % epoch)
 
-            temp = np.concatenate((gt_patch[0, :, :, :], output[0, :, :, :]), axis=1)
-            scipy.misc.toimage(temp * 255, high=255, low=0, cmin=0, cmax=255).save(
-                result_dir + '%04d/%05d_00_train_%d.jpg' % (epoch, train_id, ratio))
+            temp = np.concatenate((gt_patch[0, :, :}, :], output[0, :, :, :]), axis=1)
+            imageio.saveimg(temp * 255, result_dir + '%04d/%05d_00_train_%d.jpg' % (epoch, train_id, ratio))
+#             scipy.misc.toimage(temp * 255, high=255, low=0, cmin=0, cmax=255).save(
+#                 result_dir + '%04d/%05d_00_train_%d.jpg' % (epoch, train_id, ratio))
 
     saver.save(sess, checkpoint_dir + 'model.ckpt')
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Training routine for 'Learning to see in the Dark'")
+    parser.add_argument('-i', type=str, help="Input training image folder")
+    parser.add_argument('-l', type=str, help="Input training long exposure image folder")
+    parser.add_argument('-o', type=str, help="Outout training image folder")
+
