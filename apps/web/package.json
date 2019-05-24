@@ -1,0 +1,32 @@
+{
+  "name": "SITD_Site",
+  "version": "1.0.0",
+  "description": "Simple web app to interact with the \"Learning to See in the Dark\" paper",
+  "main": "index.js",
+  "author": "Joseph Hines",
+  "license": "MIT",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development parcel public/index.html",
+    "watch": "cross-env NODE_ENV=development parcel watch public/index.html",
+    "build": "cross-env NODE_ENV=production parcel build public/index.html --public-url /"
+  },
+  "postcss": {
+    "modules": false,
+    "plugins": {
+      "autoprefixer": {
+        "browsers": [">1%", "last 4 versions", "Firefox ESR", "not ie < 9"],
+        "flexbox": "no-2009"
+      }
+    }
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0"
+  },
+  "dependencies": {
+    "autoprefixer": "^9.5.1",
+    "babel-preset-react-app": "^9.0.0",
+    "parcel-bundler": "^1.12.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}
