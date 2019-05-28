@@ -5,9 +5,14 @@ import 'babel-polyfill'
 class Upload extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      results: [],
+    }
+
+    // Refs
     this.fileInputRef = React.createRef()
 
+    // Bindings
     this.openFileDialog = this.openFileDialog.bind(this)
     this.onFilesAdded = this.onFilesAdded.bind(this)
     this.onDragOver = this.onDragOver.bind(this)
@@ -15,6 +20,7 @@ class Upload extends React.Component {
     this.onDrop = this.onDrop.bind(this)
     this.handleFiles = this.handleFiles.bind(this)
     this.getBase64 = this.getBase64.bind(this)
+    this.renderResult = this.renderResult.bind(this)
   }
 
   handleFiles(files) {
@@ -32,6 +38,11 @@ class Upload extends React.Component {
 
     Promise.all(promises).then((data) => {
       console.log(data)
+      // query here
+
+      // this.setState({
+      // results: data,
+      // })
     })
   }
 
@@ -82,6 +93,10 @@ class Upload extends React.Component {
     }
   }
 
+  renderResult(img) {
+    return <img src={img} className="Result" />
+  }
+
   render() {
     return (
       <div>
@@ -103,7 +118,10 @@ class Upload extends React.Component {
           <span className="Title">Upload Files</span>
         </div>
         <div>
-          <span>Result</span>
+          <span>Result(s)</span>
+          <div>
+            {this.state.results.map((result) => this.renderResult(result))}
+          </div>
         </div>
       </div>
     )
