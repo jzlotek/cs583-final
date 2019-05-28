@@ -6,7 +6,7 @@
   "author": "Joseph Hines",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development parcel public/index.html",
+    "dev": "rm -rf .cache dist && cross-env NODE_ENV=development parcel public/index.html",
     "watch": "cross-env NODE_ENV=development parcel watch public/index.html",
     "build": "cross-env NODE_ENV=production parcel build public/index.html --public-url /"
   },
@@ -14,7 +14,12 @@
     "modules": false,
     "plugins": {
       "autoprefixer": {
-        "browsers": [">1%", "last 4 versions", "Firefox ESR", "not ie < 9"],
+        "browsers": [
+          ">1%",
+          "last 4 versions",
+          "Firefox ESR",
+          "not ie < 9"
+        ],
         "flexbox": "no-2009"
       }
     }
@@ -24,6 +29,7 @@
   },
   "dependencies": {
     "autoprefixer": "^9.5.1",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-react-app": "^9.0.0",
     "parcel-bundler": "^1.12.3",
     "react": "^16.8.6",

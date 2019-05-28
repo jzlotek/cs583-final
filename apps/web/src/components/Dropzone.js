@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './style/Dropzone.css'
+import '../style/Dropzone.css'
 
 class Dropzone extends Component {
   constructor(props) {

@@ -1,13 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import Dropzone from './Dropzone'
+import Upload from './components/Upload'
 
 import './style/App.css'
 
-const DropzoneWrapper = () => (
+const UploadWrapper = () => (
   <div>
-    <Dropzone onFilesAdded={console.log} />
+    <Upload />
   </div>
 )
 
@@ -18,6 +18,6 @@ const AppWrapper = (children) => (
   </div>
 )
 
-const App = () => AppWrapper(DropzoneWrapper())
+const App = () => AppWrapper(UploadWrapper())
 
 export default App
