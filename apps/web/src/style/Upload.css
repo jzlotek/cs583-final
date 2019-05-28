@@ -2,6 +2,12 @@
   background: black;
   color: white;
   padding: 40px;
+  transition: 0.4s;
+}
+
+.Highlight {
+  background: white;
+  color: black;
 }
 
 .FileInput {
