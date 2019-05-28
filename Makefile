@@ -13,5 +13,5 @@ proposal:
 clean-docs:
 	-@ rm docs/proposal.md docs/proposal.pdf
 
-run-webapp:
+server:
 	python src/app.py
