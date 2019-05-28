@@ -1,10 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+
+import Dropzone from './Dropzone'
+
 import './style/App.css'
 
 const DropzoneWrapper = () => (
-  <div className="App-Dropzone">
-    <p>Dropzone</p>
+  <div>
+    <Dropzone onFilesAdded={console.log} />
   </div>
 )
 
