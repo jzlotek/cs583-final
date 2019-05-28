@@ -14,7 +14,6 @@ app = flask.Flask(
 
 
 def b64_to_img(photos):
-
     if photos is None:
         return []
 
@@ -41,8 +40,8 @@ def serve_static(filename):
 # Correct photo with CNN and return result as JPG, PNG, etc
 @app.route('/photo', methods=['POST'])
 def correct_photo():
-    content = flask.request.args.get('json')
-
+    content = flask.request.get_json()
+    print(content)
     if content:
         if content.get('photo') and content.get('photo') != '':
             mimetype = 'image/jpg'
@@ -62,7 +61,7 @@ def correct_photo():
 
                 zf.close()
                 f = zf
-            else: # run on single image
+            else:  # run on single image
                 f = 1
                 pass
 
@@ -78,4 +77,3 @@ env = os.environ
 PORT = int(env.get('PORT')) if env.get('PORT') else 8080
 
 app.run(host="0.0.0.0", port=PORT, debug=True)
-
