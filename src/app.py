@@ -3,17 +3,43 @@ import io
 import flask
 import json
 import zipfile
-from flask import send_from_directory, send_file
+import imageio
+import base64
+from flask import send_from_directory, send_file, Response
 
-app = flask.Flask(__name__)
+app = flask.Flask(
+    __name__,
+    static_folder='static'
+)
+
+
+def b64_to_img(photos):
+
+    if photos is None:
+        return []
+
+    if type(photos) == str:
+        photos = [photos]
+
+    for i in range(len(photos)):
+        photos[i] = base64.b64decode(photos[i])
+        photos[i] = imageio.imread(io.BytesIO(photos[i]))
+
+    return photos
+
 
 @app.route('/', methods=['GET'])
 def home():
-    return send_from_directory('src/static', 'index.html')
+    return send_from_directory('../static', 'index.html')
+
+
+@app.route('/<path:filename>', methods=['GET'])
+def serve_static(filename):
+    return send_from_directory('../static', filename)
 
 
 # Correct photo with CNN and return result as JPG, PNG, etc
-@app.route('/correct', methods=['POST'])
+@app.route('/photo', methods=['POST'])
 def correct_photo():
     content = flask.request.args.get('json')
 
@@ -22,16 +48,12 @@ def correct_photo():
             mimetype = 'image/jpg'
             photos = content.get('photo')
 
-            if type(photos) == str:
-                photos = [photos]
+            photos = b64_to_img(photos)
 
-            # CNN
-
-            # TODO: return CNN output pictures
-
+            # TODO: CNN
             if len(photos) > 1:
-                mimetype='application/zip'
-                zip_io = io.BytesIO() 
+                mimetype = 'application/zip'
+                zip_io = io.BytesIO()
 
                 zf = zipfile.ZipFile(zip_io, 'w')
 
@@ -39,19 +61,21 @@ def correct_photo():
                     zf.write(i, img)
 
                 zf.close()
+                f = zf
+            else: # run on single image
+                f = 1
+                pass
 
-                return send_file(zip_io, mimetype=mimetype)
+            return Response(send_file(f, mimetype=mimetype), status=201)
 
-
-            #'application/zip'
-            return send_file(None, mimetype=mimetype)
-        else: # error, return error code 400
-            return json.dumps('{photo: [], code: 400}')
+        else:  # error, return error code 400
+            return Response(json.dumps('{photo: [], code: 400}'), status=400)
     else:
-        return json.dumps('{photo: [], code: 400}')
+        return Response(json.dumps('{photo: [], code: 400}'), status=400)
+
 
 env = os.environ
-PORT = env.get('PORT') if env.get('PORT') else 8080
+PORT = int(env.get('PORT')) if env.get('PORT') else 8080
 
 app.run(host="0.0.0.0", port=PORT, debug=True)
 
