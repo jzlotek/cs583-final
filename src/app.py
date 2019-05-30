@@ -86,7 +86,8 @@ def correct_photo():
         return Response(json.dumps('{photo: [], code: 400}'), status=400)
 
 
-env = os.environ
-PORT = int(env.get('PORT')) if env.get('PORT') else 8080
+if __name__ == '__main__':
+    PORT = int(os.environ.get('PORT')) if os.environ.get('PORT') else 8080
 
-app.run(host="0.0.0.0", port=PORT, debug=True)
+    app.run(host="0.0.0.0", port=PORT, debug=True)
+
