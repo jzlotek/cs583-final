@@ -45,26 +45,44 @@ def serve_static(filename):
 # Correct photo with CNN and return result as JPG, PNG, etc
 @app.route('/photo', methods=['POST'])
 def correct_photo():
-    files = flask.request.form.get('files')
-    logger.info(flask.request.files)
+    # files = flask.request.form.get('files')
+    files = flask.request.files
+    # l = files.get('files')
+    logger.info(files)
 
-    content = flask.request.get_json(force=True)
-    images = None
+    for f in files:
+        logger.info(f)
+        logger.info(dir(f))
+        ext = str(f).split('.')[-1]
+        logger.info('ext:', str(ext))
+        if ext in ['jpg', 'jpeg', 'png']:
+            files.get(f).save(f)
 
-    for i, upload in enumerate(flask.request.files.getlist('images')):
-        name = get(upload, 'filename', '')
-        images = []
-        if name.split('.')[-1] in ['jpg', 'jpeg', 'png']:
-            logger.info(f'Uploaded filename: {name}')
-            images.append(
-                Image.open(upload)
-            )
+    # logger.info(l)
+
+    # content = flask.request.get_json(force=True)
+    images = []
+    by = io.BytesIO()
+
+    logger.info(dir(files))
+    # logger.info(f'{i}, {upload}')
+    # logger.info(dir(upload))
+    # logger.info(f'Uploaded filename: {name}, {i}')
+    files.save('./test.jpg')
+    by.seek(0)
+
+
+
+    images.append(
+        Image.open(by)
+    )
+
+    logger.info(images)
 
     if not is_empty(images):
-        print(dir(content))
         mimetype = 'image/jpg'
 
-        photos = b64_to_img(content)
+        photos = b64_to_img(images)
 
         # TODO: CNN
         if len(photos) > 1:

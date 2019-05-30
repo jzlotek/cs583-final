@@ -30,7 +30,7 @@ class Upload extends React.Component {
 
     for (let f of data) {
       blob = new Blob([f], { type: f.type })
-      formData.append('files', blob, f.name)
+      formData.append(f.name, blob, f.name)
     }
 
     var request = new XMLHttpRequest()
