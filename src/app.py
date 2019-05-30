@@ -3,9 +3,13 @@ import io
 import flask
 import json
 import zipfile
-import imageio
-import base64
+from PIL import Image
+import loguru
+from pydash import is_empty
+from pydash.objects import get
 from flask import send_from_directory, send_file, Response
+
+logger = loguru.logger
 
 app = flask.Flask(
     __name__,
@@ -21,8 +25,9 @@ def b64_to_img(photos):
         photos = [photos]
 
     for i in range(len(photos)):
-        photos[i] = base64.b64decode(photos[i])
-        photos[i] = imageio.imread(io.BytesIO(photos[i]))
+        b = io.StringIO(photos[i])
+        b.seek(0)
+        photos[i] = Image.open(b)
 
     return photos
 
@@ -41,44 +46,44 @@ def serve_static(filename):
 @app.route('/photo', methods=['POST'])
 def correct_photo():
     content = flask.request.get_json(force=True)
+    logger.info(flask.request.files)
+    images = None
 
-    length = len(content)
-    out = {
-        "count": length
-    }
+    for i, upload in enumerate(flask.request.files.getlist('images')):
+        name = get(upload, 'filename', '')
+        images = []
+        if name.split('.')[-1] in ['jpg', 'jpeg', 'png']:
+            logger.info(f'Uploaded filename: {name}')
+            images.append(
+                Image.open(upload)
+            )
 
-    print(out)
-    return Response(json.dumps(out), status=201, mimetype='application/json')
+    if not is_empty(images):
+        print(dir(content))
+        mimetype = 'image/jpg'
 
-#    if content:
-#        if content.get('photo') and content.get('photo') != '':
-#            mimetype = 'image/jpg'
-#            photos = content.get('photo')
-#
-#            photos = b64_to_img(photos)
-#
-#            # TODO: CNN
-#            if len(photos) > 1:
-#                mimetype = 'application/zip'
-#                zip_io = io.BytesIO()
-#
-#                zf = zipfile.ZipFile(zip_io, 'w')
-#
-#                for img, i in enumerate(photos):
-#                    zf.write(i, img)
-#
-#                zf.close()
-#                f = zf
-#            else:  # run on single image
-#                f = 1
-#                pass
-#
-#            return Response(send_file(f, mimetype=mimetype), status=201)
-#
-#        else:  # error, return error code 400
-#            return Response(json.dumps('{photo: [], code: 400}'), status=400)
-#    else:
-#        return Response(json.dumps('{photo: [], code: 400}'), status=400)
+        photos = b64_to_img(content)
+
+        # TODO: CNN
+        if len(photos) > 1:
+            mimetype = 'application/zip'
+            zip_io = io.BytesIO()
+
+            zf = zipfile.ZipFile(zip_io, 'w')
+
+            for img, i in enumerate(photos):
+                zf.write(i, img)
+
+            zf.close()
+            f = zf
+        else:  # run on single image
+            f = 1
+            pass
+
+        return Response(send_file(f, mimetype=mimetype), status=201)
+
+    else:  # error, return error code 400
+        return Response(json.dumps('{photo: [], code: 400}'), status=400)
 
 
 env = os.environ
