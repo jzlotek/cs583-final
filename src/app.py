@@ -1,5 +1,6 @@
 import os
 import io
+import net
 import flask
 import json
 import zipfile
@@ -70,16 +71,17 @@ def correct_photo():
             zf = zipfile.ZipFile(f'{uniq_name}_images.zip', 'w')
 
             for i, img in enumerate(images):
-                imageio.imwrite(img[0], img[1])
+                processed_img = net.net(img[1])
+                imageio.imwrite(img[0], processed_img)
                 zf.write(img[0], img[0])
-                logger.info(f'removing tmp: {img[0]}')
+                logger.info(f'#{i}) removing tmp: {img[0]}')
                 os.remove(img[0])
 
             zf.close()
         else:  # run on single image
             return Response(json.dumps('{msg: "no images", code: 200}'), status=200)
 
-        return Response(json.dumps('{filname: "' + uniq_name + '"}'), status=200)
+        return Response(json.dumps('{filename: "' + uniq_name + '"}'), status=200)
 
     else:  # error, return error code 400
         return Response(json.dumps('{photo: [], code: 400}'), status=400)
