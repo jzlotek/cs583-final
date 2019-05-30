@@ -38,9 +38,11 @@ class Upload extends React.Component {
     var request = new XMLHttpRequest()
     request.open('POST', '/photo')
     request.onreadystatechange = function() {
+      console.log(request)
       if (request.readyState === 4) {
         switch (request.status) {
           case 200:
+            console.log("success")
             // Display/Download results
             break
           default:
@@ -49,13 +51,12 @@ class Upload extends React.Component {
         }
       }
     }
-    request.send(formData)
   }
 
   handleFiles(files) {
     let promises = []
 
-    this.sendData(files)
+    this.sendData(files).then(res => console.log(res))
 
     //    for (let i = 0; i < files.length; i++) {
     //      promises.push(
