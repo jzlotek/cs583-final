@@ -5,6 +5,7 @@ import json
 import zipfile
 import imageio
 import loguru
+import uuid
 from pydash import is_empty
 from flask import send_from_directory, send_file, Response
 
@@ -25,17 +26,13 @@ def home():
 def serve_static(filename):
     return send_from_directory('../static', filename)
 
-def cleanup():
-    pass
 
-# @app.after_request(cleanup)
 @app.route('/zip/<string:name>', methods=['GET'])
 def get_zip(name):
     by = None
     try:
         path = os.path.abspath('.')
-        by = zipfile.ZipFile(os.path.abspath(os.path.join(path, f'{name}.zip')), 'r')
-        by.close()
+        by = zipfile.ZipFile(os.path.abspath(os.path.join(path, f'{name}_images.zip')), 'r')
     except Exception as e:
         logger.error(e)
         return Response(status=404)
@@ -65,10 +62,12 @@ def correct_photo():
     if not is_empty(images):
 
         # TODO: CNN
+        uniq_name = ""
         if len(images) >= 1:
             mimetype = 'application/zip'
             logger.info('creating zip')
-            zf = zipfile.ZipFile('images.zip', 'w')
+            uniq_name = str(uuid.uuid4())
+            zf = zipfile.ZipFile(f'{uniq_name}_images.zip', 'w')
 
             for i, img in enumerate(images):
                 imageio.imwrite(img[0], img[1])
@@ -80,7 +79,7 @@ def correct_photo():
         else:  # run on single image
             return Response(json.dumps('{msg: "no images", code: 200}'), status=200)
 
-        return Response(status=200)
+        return Response(json.dumps('{filname: "' + uniq_name + '"}'), status=200)
 
     else:  # error, return error code 400
         return Response(json.dumps('{photo: [], code: 400}'), status=400)
