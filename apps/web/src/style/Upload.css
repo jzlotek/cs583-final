@@ -1,13 +1,44 @@
+.Upload-wrapper {
+  width: 100vw;
+  height: calc(100vh - 150px);
+  display: flex;
+  flex-wrap: none;
+  align-items: center;
+  justify-content: center;
+}
+
 .Upload {
-  background: black;
-  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: black;
   padding: 40px;
   transition: 0.4s;
+  background: #c4c4c4;
+  border-radius: 30px;
+
+  width: 100%;
+  max-width: 800px;
+}
+
+.Upload-prompt {
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 28px;
+  line-height: 33px;
+  width: 100%;
+  text-align: center;
+}
+
+.Upload-icon {
+  width: 100px;
+  padding: 35px 0 10px 0;
 }
 
 .Highlight {
-  background: white;
-  color: black;
+  background: #a2a2a2;
 }
 
 .FileInput {

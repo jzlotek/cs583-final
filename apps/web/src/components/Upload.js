@@ -2,6 +2,8 @@ import React from 'react'
 import '../style/Upload.css'
 import 'babel-polyfill'
 
+import UPLOAD_ICON from '../images/upload_icon.png'
+
 class Upload extends React.Component {
   constructor(props) {
     super(props)
@@ -124,7 +126,7 @@ class Upload extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="Upload-wrapper">
         <div
           className={`Upload ${this.state.hightlight ? 'Highlight' : ''}`}
           onDragOver={this.onDragOver}
@@ -140,10 +142,11 @@ class Upload extends React.Component {
             multiple
             onChange={this.onFilesAdded}
           />
-          <span className="Title">Upload Files</span>
+          <span className="Upload-prompt">Upload File(s)</span>
+          <img className="Upload-icon" src={UPLOAD_ICON} />
         </div>
-        <div>
-          <span>Result(s)</span>
+        <div className="Results">
+          <span>{this.state.results[0] !== undefined ? 'Result(s)' : ''}</span>
           <div>
             {this.state.results.map((result) => this.renderResult(result))}
           </div>

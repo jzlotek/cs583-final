@@ -6,16 +6,25 @@ import Upload from './components/Upload'
 import './style/App.css'
 
 const UploadWrapper = () => (
-  <div>
+  <React.Fragment>
     <Upload />
-  </div>
+  </React.Fragment>
 )
 
 const AppWrapper = (children) => (
-  <div className="App-Wrapper">
+  <React.Fragment>
     <h1 className="App-Title">Learning to See in the Dark</h1>
+    <a
+      className="App-ref"
+      href="https://arxiv.org/abs/1805.01934"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      Based on the research of Chen Chen, Qifeng Chen, Jia Xu, and Vladlen
+      Koltun.
+    </a>
     {children}
-  </div>
+  </React.Fragment>
 )
 
 const App = () => AppWrapper(UploadWrapper())
