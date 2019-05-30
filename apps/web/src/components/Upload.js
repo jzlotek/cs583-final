@@ -25,45 +25,38 @@ class Upload extends React.Component {
   }
 
   sendData(data) {
-    return fetch('/photo', {
-      method: 'POST',
-      mode: 'no-cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(data),
-    }).then((wrapper) =>
-      wrapper.text().then((response) => console.log(response)),
-    )
+    let formData = new FormData()
+    let blob
+
+    for (let f of data) {
+      blob = new Blob([f], { type: f.type })
+      formData.append('files', blob, f.name)
+    }
+
+    var request = new XMLHttpRequest()
+    request.open('POST', '/photo')
+    request.send(formData)
   }
 
   handleFiles(files) {
     let promises = []
 
-    for (let i = 0; i < files.length; i++) {
-      promises.push(
-        new Promise((res) => {
-          this.getBase64(files[i], (result) => {
-            res(result)
-          })
-        }),
-      )
-    }
+    this.sendData(files)
 
-    Promise.all(promises).then((data) => {
-      console.log(data)
-      // query here
-      this.sendData(data)
-
-      // this.setState({
-      // results: data,
-      // })
-    })
+    //    for (let i = 0; i < files.length; i++) {
+    //      promises.push(
+    //        new Promise((res) => {
+    //          this.getBase64(files[i], (result) => {
+    //            res(result)
+    //          })
+    //        }),
+    //      )
+    //    }
+    //
+    //    Promise.all(promises).then((data) => {
+    //      console.log(data)
+    //      this.sendData(data)
+    //    })
   }
 
   onFilesAdded(e) {

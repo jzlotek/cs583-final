@@ -45,8 +45,10 @@ def serve_static(filename):
 # Correct photo with CNN and return result as JPG, PNG, etc
 @app.route('/photo', methods=['POST'])
 def correct_photo():
-    content = flask.request.get_json(force=True)
+    files = flask.request.form.get('files')
     logger.info(flask.request.files)
+
+    content = flask.request.get_json(force=True)
     images = None
 
     for i, upload in enumerate(flask.request.files.getlist('images')):
