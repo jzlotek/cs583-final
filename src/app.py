@@ -40,37 +40,45 @@ def serve_static(filename):
 # Correct photo with CNN and return result as JPG, PNG, etc
 @app.route('/photo', methods=['POST'])
 def correct_photo():
-    content = flask.request.get_json()
-    print(content)
-    if content:
-        if content.get('photo') and content.get('photo') != '':
-            mimetype = 'image/jpg'
-            photos = content.get('photo')
+    content = flask.request.get_json(force=True)
 
-            photos = b64_to_img(photos)
+    length = len(content)
+    out = {
+        "count": length
+    }
 
-            # TODO: CNN
-            if len(photos) > 1:
-                mimetype = 'application/zip'
-                zip_io = io.BytesIO()
+    print(out)
+    return Response(json.dumps(out), status=201, mimetype='application/json')
 
-                zf = zipfile.ZipFile(zip_io, 'w')
-
-                for img, i in enumerate(photos):
-                    zf.write(i, img)
-
-                zf.close()
-                f = zf
-            else:  # run on single image
-                f = 1
-                pass
-
-            return Response(send_file(f, mimetype=mimetype), status=201)
-
-        else:  # error, return error code 400
-            return Response(json.dumps('{photo: [], code: 400}'), status=400)
-    else:
-        return Response(json.dumps('{photo: [], code: 400}'), status=400)
+#    if content:
+#        if content.get('photo') and content.get('photo') != '':
+#            mimetype = 'image/jpg'
+#            photos = content.get('photo')
+#
+#            photos = b64_to_img(photos)
+#
+#            # TODO: CNN
+#            if len(photos) > 1:
+#                mimetype = 'application/zip'
+#                zip_io = io.BytesIO()
+#
+#                zf = zipfile.ZipFile(zip_io, 'w')
+#
+#                for img, i in enumerate(photos):
+#                    zf.write(i, img)
+#
+#                zf.close()
+#                f = zf
+#            else:  # run on single image
+#                f = 1
+#                pass
+#
+#            return Response(send_file(f, mimetype=mimetype), status=201)
+#
+#        else:  # error, return error code 400
+#            return Response(json.dumps('{photo: [], code: 400}'), status=400)
+#    else:
+#        return Response(json.dumps('{photo: [], code: 400}'), status=400)
 
 
 env = os.environ

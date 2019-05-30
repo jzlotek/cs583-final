@@ -21,6 +21,25 @@ class Upload extends React.Component {
     this.handleFiles = this.handleFiles.bind(this)
     this.getBase64 = this.getBase64.bind(this)
     this.renderResult = this.renderResult.bind(this)
+    this.sendData = this.sendData.bind(this)
+  }
+
+  sendData(data) {
+    return fetch('/photo', {
+      method: 'POST',
+      mode: 'no-cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow',
+      referrer: 'no-referrer',
+      body: JSON.stringify(data),
+    }).then((wrapper) =>
+      wrapper.text().then((response) => console.log(response)),
+    )
   }
 
   handleFiles(files) {
@@ -39,6 +58,7 @@ class Upload extends React.Component {
     Promise.all(promises).then((data) => {
       console.log(data)
       // query here
+      this.sendData(data)
 
       // this.setState({
       // results: data,
