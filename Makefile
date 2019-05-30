@@ -13,5 +13,9 @@ proposal:
 clean-docs:
 	-@ rm docs/proposal.md docs/proposal.pdf
 
-server:
+dev:
 	python src/app.py
+
+server:
+	PORT=80 python src/app.py
+
