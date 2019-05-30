@@ -35,6 +35,18 @@ class Upload extends React.Component {
 
     var request = new XMLHttpRequest()
     request.open('POST', '/photo')
+    request.onreadystatechange = function() {
+      if (request.readyState === 4) {
+        switch (request.status) {
+          case 200:
+            // Display/Download results
+            break
+          default:
+            // Handle error
+            break
+        }
+      }
+    }
     request.send(formData)
   }
 
