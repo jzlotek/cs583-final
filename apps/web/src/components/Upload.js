@@ -31,7 +31,10 @@ class Upload extends React.Component {
   deleteZip(uuid) {}
 
   getZip(uuid, del) {
-    window.open('/zip/' + uuid, '_blank')
+    let download = window.open('/zip/' + uuid, '_blank')
+    download.onunload = () => {
+      // call delete
+    }
 
     //    var request = new XMLHttpRequest()
     //    request.open('GET', '/zip/' + uuid)
