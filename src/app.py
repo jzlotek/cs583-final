@@ -31,18 +31,13 @@ def serve_static(filename):
 @app.route('/zip/<string:name>', methods=['GET', 'DELETE'])
 def get_zip(name):
     path = os.path.abspath(os.path.join(os.path.abspath('.'), f'{name}_images.zip'))
-
+    logger.info(flask.request.method)
+    logger.info(path)
     if flask.request.method == 'GET':
-        by = None
         try:
-            by = zipfile.ZipFile(path, 'r')
+            return send_file(path, mimetype='application/zip', attachment_filename='images.zip', as_attachment=True)
         except Exception as e:
             logger.error(e)
-            return Response(status=404)
-
-        if by:
-            return send_file(by, mimetype='application/zip', attachment_filename='images.zip', as_attachment=True)
-        else:
             return Response(status=404)
     else:
         try:
