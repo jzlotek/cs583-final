@@ -1,1 +1,1 @@
-web: PORT=8000 python src/app.py
+web python src/app.py
