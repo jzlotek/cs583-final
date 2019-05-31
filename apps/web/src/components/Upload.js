@@ -24,9 +24,35 @@ class Upload extends React.Component {
     this.getBase64 = this.getBase64.bind(this)
     this.renderResult = this.renderResult.bind(this)
     this.sendData = this.sendData.bind(this)
+    this.getZip = this.getZip.bind(this)
+    this.deleteZip = this.deleteZip.bind(this)
   }
 
-  sendData(data) {
+  deleteZip(uuid) {}
+
+  getZip(uuid, del) {
+    window.open('/zip/' + uuid, '_blank')
+
+    //    var request = new XMLHttpRequest()
+    //    request.open('GET', '/zip/' + uuid)
+    //    request.onreadystatechange = function() {
+    //      if (request.readyState === 4) {
+    //        switch (request.status) {
+    //          case 200:
+    //            console.log('success')
+    //            // Delete from server
+    //            break
+    //          default:
+    //            console.log('fail')
+    //            // Handle error
+    //            break
+    //        }
+    //      }
+    //    }
+    //    request.send()
+  }
+
+  sendData(data, get, del) {
     let formData = new FormData()
     let blob
 
@@ -38,40 +64,28 @@ class Upload extends React.Component {
     var request = new XMLHttpRequest()
     request.open('POST', '/photo')
     request.onreadystatechange = function() {
-      console.log(request)
       if (request.readyState === 4) {
         switch (request.status) {
           case 200:
-            console.log("success")
+            let response = JSON.parse(request.responseText)
+            console.log(response.filename)
+            get(response.filename, del)
             // Display/Download results
             break
           default:
+            console.log('fail')
             // Handle error
             break
         }
       }
     }
+    request.send(formData)
   }
 
   handleFiles(files) {
     let promises = []
 
-    this.sendData(files).then(res => console.log(res))
-
-    //    for (let i = 0; i < files.length; i++) {
-    //      promises.push(
-    //        new Promise((res) => {
-    //          this.getBase64(files[i], (result) => {
-    //            res(result)
-    //          })
-    //        }),
-    //      )
-    //    }
-    //
-    //    Promise.all(promises).then((data) => {
-    //      console.log(data)
-    //      this.sendData(data)
-    //    })
+    this.sendData(files, this.getZip, this.deleteZip)
   }
 
   onFilesAdded(e) {
