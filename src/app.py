@@ -28,20 +28,30 @@ def serve_static(filename):
     return send_from_directory('../static', filename)
 
 
-@app.route('/zip/<string:name>', methods=['GET'])
+@app.route('/zip/<string:name>', methods=['GET', 'DELETE'])
 def get_zip(name):
-    by = None
-    try:
-        path = os.path.abspath('.')
-        by = zipfile.ZipFile(os.path.abspath(os.path.join(path, f'{name}_images.zip')), 'r')
-    except Exception as e:
-        logger.error(e)
-        return Response(status=404)
+    path = os.path.abspath(os.path.join(os.path.abspath('.'), f'{name}_images.zip'))
 
-    if by:
-        return send_file(by, mimetype='application/zip', attachment_filename='images.zip', as_attachment=True)
+    if flask.request.method == 'GET':
+        by = None
+        try:
+            by = zipfile.ZipFile(path, 'r')
+        except Exception as e:
+            logger.error(e)
+            return Response(status=404)
+
+        if by:
+            return send_file(by, mimetype='application/zip', attachment_filename='images.zip', as_attachment=True)
+        else:
+            return Response(status=404)
     else:
-        return Response(status=404)
+        try:
+            os.remove(path)
+            return Response(status=200)
+        except Exception as e:
+            logger.error(e)
+            return Response(status=404)
+
 
 # Correct photo with CNN and return result as JPG, PNG, etc
 @app.route('/photo', methods=['POST'])
