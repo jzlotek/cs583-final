@@ -1,14 +1,17 @@
 import React from 'react'
-import '../style/Upload.css'
+
 import 'babel-polyfill'
+import { toast } from 'react-toastify'
 
 import UPLOAD_ICON from '../images/upload_icon.png'
+import '../style/Upload.css'
 
 class Upload extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       results: [],
+      toastId: 0,
     }
 
     // Refs
@@ -28,105 +31,107 @@ class Upload extends React.Component {
     this.deleteZip = this.deleteZip.bind(this)
   }
 
-  deleteZip(uuid) {}
+  deleteZip(uuid) {
+    var request = new XMLHttpRequest()
+    request.open('DELETE', '/zip/' + uuid)
+    request.send()
+  }
 
   getZip(uuid, del) {
     let download = window.open('/zip/' + uuid, '_blank')
-    download.onunload = () => {
-      // call delete
-    }
 
-    //    var request = new XMLHttpRequest()
-    //    request.open('GET', '/zip/' + uuid)
-    //    request.onreadystatechange = function() {
-    //      if (request.readyState === 4) {
-    //        switch (request.status) {
-    //          case 200:
-    //            console.log('success')
-    //            // Delete from server
-    //            break
-    //          default:
-    //            console.log('fail')
-    //            // Handle error
-    //            break
-    //        }
-    //      }
-    //    }
-    //    request.send()
+    download.onunload = () => {
+      toast.update(10, {
+        autoClose: 5000,
+        render: 'Success, downloading now',
+        type: toast.TYPE.SUCCESS,
+        className: 'Upload-toast rotateY animated',
+      })
+
+      del(uuid)
+    }
   }
 
   sendData(data, get, del) {
+    toast('Loading...', {
+      autoClose: false,
+      className: 'Upload-toast',
+      closeButton: false,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      toastId: 10,
+      type: toast.TYPE.INFO,
+    })
     let formData = new FormData()
     let blob
-
     for (let f of data) {
       blob = new Blob([f], { type: f.type })
       formData.append(f.name, blob, f.name)
     }
-
     var request = new XMLHttpRequest()
     request.open('POST', '/photo')
     request.onreadystatechange = function() {
       if (request.readyState === 4) {
         switch (request.status) {
           case 200:
+            // Download results
             let response = JSON.parse(request.responseText)
-            console.log(response.filename)
             get(response.filename, del)
-            // Display/Download results
             break
           default:
-            console.log('fail')
             // Handle error
+            toast('Server error, try again...', {
+              autoClose: 10000,
+              className: 'Upload-toast',
+              closeButton: false,
+              position: toast.POSITION.BOTTOM_RIGHT,
+              toastId: 5,
+              type: toast.TYPE.ERROR,
+            })
             break
         }
       }
     }
     request.send(formData)
   }
-
   handleFiles(files) {
     let promises = []
-
-    this.sendData(files, this.getZip, this.deleteZip)
+    if (files.length <= 5) {
+      this.sendData(files, this.getZip, this.deleteZip)
+    } else {
+      toast('Please upload 5 or less files at once...', {
+        autoClose: 10000,
+        className: 'Upload-toast',
+        closeButton: false,
+        position: toast.POSITION.BOTTOM_RIGHT,
+        toastId: 5,
+        type: toast.TYPE.ERROR,
+      })
+    }
   }
-
   onFilesAdded(e) {
     if (this.props.disabled) return
     const files = e.target.files
-
     this.handleFiles(files)
   }
-
   onDragLeave() {
     this.setState({ hightlight: false })
   }
-
   onDrop(e) {
     e.preventDefault()
-
     if (this.props.disabled) return
-
     const files = e.dataTransfer.files
-
     this.handleFiles(files)
-
     this.setState({ hightlight: false })
   }
-
   onDragOver(e) {
     e.preventDefault()
-
     if (this.props.disabled) return
-
     this.setState({ hightlight: true })
   }
-
   openFileDialog() {
     if (this.props.disabled) return
     this.fileInputRef.current.click()
   }
-
   getBase64(file, cb) {
     let reader = new FileReader()
     reader.readAsDataURL(file)
@@ -137,11 +142,9 @@ class Upload extends React.Component {
       console.log('Error: ', error)
     }
   }
-
   renderResult(img) {
     return <img src={img} className="Result" />
   }
-
   render() {
     return (
       <div className="Upload-wrapper">
@@ -160,7 +163,7 @@ class Upload extends React.Component {
             multiple
             onChange={this.onFilesAdded}
           />
-          <span className="Upload-prompt">Upload File(s)</span>
+          <span className="Upload-prompt">Upload JPGs or PNGs</span>
           <img className="Upload-icon" src={UPLOAD_ICON} />
         </div>
         <div className="Results">
@@ -173,5 +176,4 @@ class Upload extends React.Component {
     )
   }
 }
-
 export default Upload

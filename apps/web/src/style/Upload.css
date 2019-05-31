@@ -37,6 +37,14 @@
   padding: 35px 0 10px 0;
 }
 
+.Upload-toast {
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  text-align: center;
+}
+
 .Highlight {
   background: #a2a2a2;
 }

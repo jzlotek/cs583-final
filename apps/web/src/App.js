@@ -1,6 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 import Upload from './components/Upload'
 
 import './style/App.css'
@@ -13,6 +16,7 @@ const UploadWrapper = () => (
 
 const AppWrapper = (children) => (
   <React.Fragment>
+    <ToastContainer />
     <h1 className="App-Title">Learning to See in the Dark</h1>
     <a
       className="App-ref"
