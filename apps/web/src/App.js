@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import Upload from './components/Upload'
@@ -32,5 +32,10 @@ const AppWrapper = (children) => (
 )
 
 const App = () => AppWrapper(UploadWrapper())
+
+toast('Make sure to allow pop-ups from this page', {
+  autoClose: 8000,
+  className: 'Upload-toast',
+})
 
 export default App
