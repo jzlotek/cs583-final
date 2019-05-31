@@ -1,0 +1,9 @@
+{
+  "name": "cs583-final",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:jzlotek/cs583-final.git",
+  "author": "Joseph Hines <jthines3@gmail.com>",
+  "license": "MIT",
+  "postinstall": "cd apps/web && yarn install && yarn build"
+}
