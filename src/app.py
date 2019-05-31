@@ -91,7 +91,7 @@ def correct_photo():
         else:  # run on single image
             return Response(json.dumps('{msg: "no images", code: 200}'), status=200)
 
-        return Response(json.dumps('{filename: "' + uniq_name + '"}'), status=200)
+        return Response(json.dumps('{"filename": "' + uniq_name + '"}'), status=200)
 
     else:  # error, return error code 400
         return Response(json.dumps('{photo: [], code: 400}'), status=400)
