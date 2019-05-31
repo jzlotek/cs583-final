@@ -89,12 +89,12 @@ def correct_photo():
 
             zf.close()
         else:  # run on single image
-            return Response(json.dumps('{msg: "no images", code: 200}'), status=200)
+            return Response(json.dumps('{msg: "no images", code: 200}'), status=200, mimetype='application/json')
 
-        return Response(json.loads(json.dumps('{"filename": "' + uniq_name + '"}')), status=200)
+        return Response(json.loads(json.dumps('{"filename": "' + uniq_name + '"}')), status=200, mimetype='application/json')
 
     else:  # error, return error code 400
-        return Response(json.dumps('{photo: [], code: 400}'), status=400)
+        return Response(json.dumps('{photo: [], code: 400}'), status=400, mimetype='application/json')
 
 
 if __name__ == '__main__':
