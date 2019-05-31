@@ -1,5 +1,4 @@
 .Upload-wrapper {
-  width: 100vw;
   height: calc(100vh - 150px);
   display: flex;
   flex-wrap: none;

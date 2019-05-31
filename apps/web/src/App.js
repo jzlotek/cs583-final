@@ -28,6 +28,39 @@ const AppWrapper = (children) => (
       Koltun.
     </a>
     {children}
+    <div className="App-about">
+      <h1>About</h1>
+      <p>
+        This is our final project for CS583 at Drexel University. The source
+        code for this project
+      </p>
+      <a
+        className="App-repo"
+        href="https://github.com/jzlotek/cs583-final"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        can be found here
+      </a>
+      <a
+        className="App-dev"
+        href="https://github.com/josephthomashines"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <h2>Joseph Hines</h2>
+        <span>Frontend Design and Development + Neural Net Optimizations</span>
+      </a>
+      <a
+        className="App-dev"
+        href="https://github.com/jzlotek"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <h2>John Zlotek</h2>
+        <span>Backend Design and Development + Neural Net Optimizations</span>
+      </a>
+    </div>
   </React.Fragment>
 )
 
