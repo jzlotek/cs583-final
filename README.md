@@ -39,6 +39,8 @@ instructions/requirements for various items.
 		the paper (but deadlines can be a tricky thing).
 	- This model requires a ~100MB of disk space, and is unzipped into
 		`src/trained_model/`
+	- To download (from inside `src/`)
+	- `python3 download_our_model.py`
 - Train the model
 	- If you choose to train the model yourself, it is good to be aware of
 		the `batch_size` variable. A high batch number _could_ provide better

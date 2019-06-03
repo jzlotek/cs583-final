@@ -1,0 +1,4 @@
+To build the slides:
+	download https://drexel-cs583-final.s3.us-east-2.amazonaws.com/slides-pictures.zip
+	move it into this directory
+	unzip it

@@ -474,4 +474,5 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
-
+our_model.zip
+trained_model
