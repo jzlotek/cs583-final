@@ -51,7 +51,45 @@ date: \today
 
 * Encourage curiosity
 
-## Our Results/Improvements
+# Our Results/Improvements
+
+## Results
+
+![](./pics/example_1.png)
+
+##
+
+![](./pics/example_2.png)
+
+##
+
+![](./pics/example_3.png)
+
+## Ground Truth
+
+![](./pics/example_4_gt.png)
+
+## Traditional Scaling
+
+![](./pics/example_4_scale.png)
+
+## Our Model
+
+![](./pics/example_4_out.png)
+
+## Ground Truth
+
+![](./pics/example_5_gt.png)
+
+## Traditional Scaling
+
+![](./pics/example_5_scale.png)
+
+## Our Model
+
+![](./pics/example_5_out.png)
+
+## Contributions
 
 - Implement batching to reduce training memory usage
 
@@ -65,25 +103,20 @@ date: \today
 
 * Created a IPython Notebook for Colab
 
-# Going Forward
+## Going Forward
 
-## Supporting more raw formats
+- Supporting more raw formats
 
-a
+* General JPG/PNG implementation
 
-## General JPG/PNG implementation
+- Visualize the model
 
-b
+* Optimize the amplification parameter
 
-## Provide more information to why/how this works (visualization)
+- Better hosting solution for dataset
 
-c
+* Put it in an App and charge \$5
 
-## Better hosting solution for dataset
+# Thank you!
 
-d
-
-## Put it in an App and charge \$5
-
-e
 
