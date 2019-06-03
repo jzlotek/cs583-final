@@ -1,7 +1,5 @@
 import os
-import io
 import net
-import rawpy
 import flask
 import json
 import zipfile
@@ -76,8 +74,6 @@ def correct_photo():
             value.save(name)
             images.append((name,))
             processed_img = net.net(name)
-            logger.info(dir(processed_img))
-            logger.info(processed_img.shape)
             name = name.split('.')[0] + '.png'
             imageio.imwrite(name, processed_img)
             zf.write(name, name)
@@ -89,17 +85,9 @@ def correct_photo():
     zf.close()
 
     if not is_empty(images):
-        # TODO: CNN
-        if len(images) >= 1:
-            pass
-
-        else:  # run on single image
-            return Response(json.dumps('{msg: "no images", code: 200}'), status=200, mimetype='application/json')
-
-        return Response(json.loads(json.dumps('{"filename": "' + uniq_name + '"}')), status=200, mimetype='application/json')
-
+        return Response(json.loads(json.dumps('{"filename": "' + uniq_name + '"}')), status=200, mimetype=mimetype)
     else:  # error, return error code 400
-        return Response(json.dumps('{photo: [], code: 400}'), status=400, mimetype='application/json')
+        return Response(json.dumps('{msg: "no images", code: 400}'), status=400, mimetype='application/json')
 
 
 @logger.catch
