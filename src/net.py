@@ -69,8 +69,6 @@ def network(input):
 def pack_raw(raw):
     # pack Bayer image to 4 channels
     im = raw.raw_image_visible.astype(np.float32)
-    logger.info(im)
-    logger.info(im.shape)
 
     im = np.maximum(im - 512, 0) / (16383 - 512)  # subtract the black level
 
@@ -78,7 +76,6 @@ def pack_raw(raw):
     img_shape = im.shape
     H = img_shape[0]
     W = img_shape[1]
-    logger.info(img_shape)
 
     out = np.concatenate((im[0:H:2, 0:W:2, :],
                           im[0:H:2, 1:W:2, :],
@@ -105,14 +102,12 @@ else:
 
 
 @logger.catch
-def run_on_img(img):
+def run_on_img(img, ratio=100):
     in_files = glob.glob(f'./{img}')
 
     raw = rawpy.imread(in_files[0])
 
-    logger.info(dir(raw))
     # TODO: Automatically calcualte the ratio
-    ratio = 100
     input_full = np.expand_dims(pack_raw(raw), axis=0) * ratio
     input_full = np.minimum(input_full, 1.0)
 
@@ -120,8 +115,6 @@ def run_on_img(img):
     output = np.minimum(np.maximum(output, 0), 1)
 
     output = output[0, :, :, :]
-    img_shape = output.shape
-    logger.info(img_shape)
     output *= 255
     output = scipy.misc.bytescale(output, cmin=0, cmax=255, high=255, low=0)
 
