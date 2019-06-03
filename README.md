@@ -51,5 +51,8 @@ instructions/requirements for various items.
 	- This requires a model to exist in `src/trained_model/`
 	- From inside `src/`
 		- `python3 test_Sony.py`
-- ***CLI????***
+- CLI application is run via `python correct_img.py`
+  - Usage:
+    - `python correct_img.py {source} {optional: destination}`
+    - Not supplying a destination will create a `.png` file in the same directory of the source image
 
