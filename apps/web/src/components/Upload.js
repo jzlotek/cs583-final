@@ -163,7 +163,7 @@ class Upload extends React.Component {
             multiple
             onChange={this.onFilesAdded}
           />
-          <span className="Upload-prompt">Upload JPGs or PNGs</span>
+          <span className="Upload-prompt">Upload DNGs or ARWs</span>
           <img className="Upload-icon" src={UPLOAD_ICON} />
         </div>
         <div className="Results">
