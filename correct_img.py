@@ -10,13 +10,14 @@ if __name__ == '__main__':
         exit(1)
 
     raw = sys.argv[1]
-    dest = sys.argv[2] if len(sys.argv) == 3 else './'
+    dest = './'
 
     if not os.path.isfile(raw):
         print(f'{raw} is not a file')
         exit(1)
 
-    processed_img = net.net(raw)
+    ratio = int(sys.argv[2]) if len(sys.argv) == 3 else 50
+    processed_img = net.net(raw, ratio)
 
-    imageio.imwrite(f'{dest}/{raw.split(".")[0]}.png', processed_img)
-    print(f'image created at {dest}/{raw.split(".")[0]}.png')
+    imageio.imwrite(f'{dest}/{raw.split(".")[0]}_{ratio}.png', processed_img)
+    print(f'image created at {dest}/{raw.split(".")[0]}_{ratio}.png')
