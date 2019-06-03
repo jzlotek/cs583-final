@@ -63,7 +63,7 @@ def correct_photo():
 
     for name, value in files.items():
         ext = str(name).split('.')[-1]
-        if ext in ['jpg', 'jpeg', 'png']:
+        if ext.lower() in ['jpg', 'jpeg', 'png']:
             value.save(name)
             images.append((name, ))
             processed_img = net.net(name)
@@ -71,7 +71,7 @@ def correct_photo():
             zf.write(name, name)
             logger.info(f'removing tmp: {name}')
             os.remove(name)
-        elif ext in ['ARW', 'dng']:
+        elif ext.lower() in ['arw', 'dng']:
             ext = name.split('.')[1]
             value.save(name)
             images.append((name,))
