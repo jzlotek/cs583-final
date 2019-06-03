@@ -20,7 +20,7 @@ train_ids = [int(os.path.basename(train_fn)[0:5]) for train_fn in train_fns]
 ps = 512  # patch size for training
 save_freq = 500
 
-DEBUG = 0
+DEBUG = 1
 if DEBUG == 1:
     save_freq = 2
     train_ids = train_ids[0:5]
@@ -92,10 +92,12 @@ def pack_raw(raw):
     H = img_shape[0]
     W = img_shape[1]
 
-    out = np.concatenate((im[0:H:2, 0:W:2, :],
-                          im[0:H:2, 1:W:2, :],
-                          im[1:H:2, 1:W:2, :],
-                          im[1:H:2, 0:W:2, :]), axis=2)
+    out = np.concatenate((im[0:H:2, 0:W:2, :],  # Red
+                          im[0:H:2, 1:W:2, :],  # Green 1
+                          im[1:H:2, 1:W:2, :],  # Blue
+                          im[1:H:2, 0:W:2, :]   # Green 2
+                          ),
+                         axis=2)
     return out
 
 
@@ -143,7 +145,7 @@ for epoch in range(lastepoch, 4001):
         # get the path from image id
         train_id = train_ids[ind]
         in_files = glob.glob(input_dir + '%05d_00*.ARW' % train_id)
-        in_path = in_files[np.random.random_integers(0, len(in_files) - 1)]
+        in_path = in_files[np.random.random_integers(0, len(in_files) - 1) if len(in_files) > 1 else 0]
         in_fn = os.path.basename(in_path)
 
         gt_files = glob.glob(gt_dir + '%05d_00*.ARW' % train_id)
@@ -161,7 +163,6 @@ for epoch in range(lastepoch, 4001):
             input_images[str(ratio)[0:3]][ind] = np.expand_dims(pack_raw(raw), axis=0) * ratio
 
             gt_raw = rawpy.imread(gt_path)
-            im = gt_raw.postprocess(use_camera_wb=True, half_size=False, no_auto_bright=True, output_bps=16)
             gt_images[ind] = np.expand_dims(np.float32(im / 65535.0), axis=0)
 
         # crop
