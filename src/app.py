@@ -1,5 +1,4 @@
 import os
-import io
 import net
 import flask
 import json
@@ -49,50 +48,54 @@ def get_zip(name):
 
 
 # Correct photo with CNN and return result as JPG, PNG, etc
+@logger.catch
 @app.route('/photo', methods=['POST'])
 def correct_photo():
     files = flask.request.files
     images = []
 
+    mimetype = 'application/zip'
+
+    uniq_name = str(uuid.uuid4())
+    zf = zipfile.ZipFile(f'{uniq_name}_images.zip', 'w')
+
     for name, value in files.items():
         ext = str(name).split('.')[-1]
-        if ext in ['jpg', 'jpeg', 'png']:
+        if ext.lower() in ['jpg', 'jpeg', 'png']:
             value.save(name)
-            img = imageio.imread(name)
-            images.append((name, img))
-            logger.info(f'removing: {name}')
+            images.append((name, ))
+            processed_img = net.net(name)
+            imageio.imwrite(name, processed_img)
+            zf.write(name, name)
+            logger.info(f'removing tmp: {name}')
             os.remove(name)
+        elif ext.lower() in ['arw', 'dng']:
+            ext = name.split('.')[1]
+            value.save(name)
+            images.append((name,))
+            processed_img = net.net(name)
+            name = name.split('.')[0] + '.png'
+            imageio.imwrite(name, processed_img)
+            zf.write(name, name)
+            logger.info(f'removing tmp: {name}')
+            os.remove(name)
+            os.remove(name.split('.')[0] + '.' + ext)
 
     logger.info(f'processing {len(images)} images')
+    zf.close()
 
     if not is_empty(images):
-
-        # TODO: CNN
-        uniq_name = ""
-        if len(images) >= 1:
-            mimetype = 'application/zip'
-            logger.info('creating zip')
-            uniq_name = str(uuid.uuid4())
-            zf = zipfile.ZipFile(f'{uniq_name}_images.zip', 'w')
-
-            for i, img in enumerate(images):
-                processed_img = net.net(img[1])
-                imageio.imwrite(img[0], processed_img)
-                zf.write(img[0], img[0])
-                logger.info(f'#{i}) removing tmp: {img[0]}')
-                os.remove(img[0])
-
-            zf.close()
-        else:  # run on single image
-            return Response(json.dumps('{msg: "no images", code: 200}'), status=200, mimetype='application/json')
-
-        return Response(json.loads(json.dumps('{"filename": "' + uniq_name + '"}')), status=200, mimetype='application/json')
-
+        return Response(json.loads(json.dumps('{"filename": "' + uniq_name + '"}')), status=200, mimetype=mimetype)
     else:  # error, return error code 400
-        return Response(json.dumps('{photo: [], code: 400}'), status=400, mimetype='application/json')
+        return Response(json.dumps('{msg: "no images", code: 400}'), status=400, mimetype='application/json')
 
 
-if __name__ == '__main__':
+@logger.catch
+def main():
     PORT = int(os.environ.get('PORT')) if os.environ.get('PORT') else 8080
 
     app.run(host="0.0.0.0", port=PORT, debug=True)
+
+
+if __name__ == '__main__':
+    main()
