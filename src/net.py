@@ -102,7 +102,7 @@ else:
 
 
 @logger.catch
-def run_on_img(img, ratio=100):
+def run_on_img(img, ratio=5):
     in_files = glob.glob(f'./{img}')
 
     raw = rawpy.imread(in_files[0])
@@ -115,6 +115,7 @@ def run_on_img(img, ratio=100):
     output = np.minimum(np.maximum(output, 0), 1)
 
     output = output[0, :, :, :]
+    output = np.flip(output, axis=2)
     output *= 255
     output = scipy.misc.bytescale(output, cmin=0, cmax=255, high=255, low=0)
 
