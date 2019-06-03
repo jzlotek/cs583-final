@@ -5,6 +5,7 @@ import numpy as np
 import rawpy
 import loguru
 import glob
+import scipy.misc
 
 logger = loguru.logger
 
@@ -110,7 +111,9 @@ def run_on_img(img):
     raw = rawpy.imread(in_files[0])
 
     logger.info(dir(raw))
-    input_full = np.expand_dims(pack_raw(raw), axis=0)
+    # TODO: Automatically calcualte the ratio
+    ratio = 100
+    input_full = np.expand_dims(pack_raw(raw), axis=0) * ratio
     input_full = np.minimum(input_full, 1.0)
 
     output = sess.run(out_image, feed_dict={in_image: input_full})
@@ -119,8 +122,11 @@ def run_on_img(img):
     output = output[0, :, :, :]
     img_shape = output.shape
     logger.info(img_shape)
+    output *= 255
+    output = scipy.misc.bytescale(output, cmin=0, cmax=255, high=255, low=0)
 
-    return output * 255
+    return output
+
 
 def net(image):
     return run_on_img(image)
