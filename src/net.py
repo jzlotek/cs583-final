@@ -92,7 +92,7 @@ out_image = network(in_image)
 saver = tf.train.Saver()
 sess.run(tf.global_variables_initializer())
 
-ckpt = tf.train.get_checkpoint_state('src/trained_models')
+ckpt = tf.train.get_checkpoint_state('src/trained_model')
 
 if ckpt:
     logger.info('loaded ' + ckpt.model_checkpoint_path)
@@ -102,7 +102,7 @@ else:
 
 
 @logger.catch
-def run_on_img(img, ratio=5):
+def run_on_img(img, ratio=50):
     in_files = glob.glob(f'./{img}')
 
     raw = rawpy.imread(in_files[0])
@@ -117,10 +117,9 @@ def run_on_img(img, ratio=5):
     output = output[0, :, :, :]
     output = np.flip(output, axis=2)
     output *= 255
-    output = scipy.misc.bytescale(output, cmin=0, cmax=255, high=255, low=0)
 
     return output
 
 
-def net(image):
-    return run_on_img(image)
+def net(image, ratio):
+    return run_on_img(image,ratio)
