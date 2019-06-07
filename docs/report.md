@@ -7,6 +7,11 @@ The work done was to port the code over to Python3, remove deprecation warnings 
 
 # Related Work
 
+The paper ``Learning to See in the Dark'' proposed a new way of making low light level photography more visible.
+Instead of using the traditional pipeline of white balencing, gamma correction, and denoising, the researchers replaced it with a single convolutional neural network trained to do all of the above with better results.
+The implementation trained various low light level images with different exposure times and comparing it to a long exposure of the same scene to calulate a loss for that round of training.
+Other research has gone into denoiseing and low light enhancement as stated in the paper.
+
 # Contributions
 
 We were able to port over most of the existing code to Python3 and started using Keras with the tensorflow back end instead of just tensorflow alone.
