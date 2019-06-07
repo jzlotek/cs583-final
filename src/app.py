@@ -70,7 +70,6 @@ def correct_photo():
             logger.info(f'removing tmp: {name}')
             os.remove(name)
         elif ext.lower() in ['arw', 'dng']:
-            ext = name.split('.')[1]
             value.save(name)
             images.append((name,))
             processed_img = net.net(name)

@@ -76,9 +76,9 @@ It will then send back a zipfile that contains all of the processed
 images in png format.
 
 We also verified the use of DNG's with the model.
-At first, the model only had support verified support for Sony ARW
+At first, the model only had verified support for Sony ARW
 raw files.
-From testing it, we were able to verify that DNG raw files work also.
+From testing it, we were able to verify that DNG raw files also work.
 Because of this, phones like the iPhone and Pixel (phones we had on
 hand) are able to take raw images and input them into the application
 and get back a corrected image.
@@ -154,9 +154,12 @@ The repository is broken up into several directories.
 	model
 - correct_img.py
 	- File to interface with a trained model
+- install
+  - install complete environment and models
 
 # Conclusion
 
 All in all, we are very proud of the work we have done on this project.
 We have learned about not only this model, but machine learning and its
 application to computer vision.
+
