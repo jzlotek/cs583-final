@@ -16,6 +16,7 @@ The paper ``Learning to See in the Dark'' proposed a new way of making low light
 Instead of using the traditional pipeline of white balencing, gamma correction, and denoising, the researchers replaced it with a single convolutional neural network trained to do all of the above with better results.
 The implementation trained various low light level images with different exposure times and comparing it to a long exposure of the same scene to calulate a loss for that round of training.
 Other research has gone into denoiseing and low light enhancement as stated in the paper.
+These approaches have limitations unfortunately.
 
 
 # Contributions
