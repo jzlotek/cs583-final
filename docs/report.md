@@ -42,7 +42,6 @@ Other research has gone into denoising and low light enhancement as
 stated in the paper. But, the provided model produces images with
 much level noise and distortion than _all_ of these methods.
 
-
 # Contributions
 
 We were able to port over the Sony portion of the existing code to
