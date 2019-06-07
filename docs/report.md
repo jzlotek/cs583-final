@@ -22,4 +22,11 @@ We have also created a web application to allow people with minimal coding or ma
 The web application uses a Python3 flask back end for taking in the POST requests and forwarding the images to the Keras neural network for processing.
 It will then send back a zipfile that contains all of the processed images in png format.
 
+We also verified the use of DNG's with the model.
+At first, the model only had support verified support for Sony ARW raw files.
+From testing it, we were able to verify that DNG raw files work also.
+Because of this, phones like the iPhone and Pixel (phones we had on hand) are able to take raw images and input them into the application and get back a corrected image.
+This is very useful as phone cameras are notoriously bad at taking images, especially raw, in the dark.
+It has gotten better over the years, but from taking outr own photos, we were still seeing a large amount of noise from the images.
+
 # Results
