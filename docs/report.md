@@ -1,7 +1,12 @@
+---
+title: "Learning to See in the Dark"
+author: "Joe Hines and John Zlotek"
+---
+
 # Abstract
 
 The purpose of this project was to be able to take the research done by Learning to See in the Dark and make it more accessible and maintainable.
-The work done was to port the code over to Python3, remove deprecation warnings due to soon to be outdated code, and create a better codebase that is easily readable and therefor more maintainable.
+The work done was to port the code over to Python3, remove deprecation warnings due to soon to be outdated code, and create a better code base that is easily readable and therefor more maintainable.
 
 # Introduction
 
@@ -11,6 +16,7 @@ The paper ``Learning to See in the Dark'' proposed a new way of making low light
 Instead of using the traditional pipeline of white balencing, gamma correction, and denoising, the researchers replaced it with a single convolutional neural network trained to do all of the above with better results.
 The implementation trained various low light level images with different exposure times and comparing it to a long exposure of the same scene to calulate a loss for that round of training.
 Other research has gone into denoiseing and low light enhancement as stated in the paper.
+
 
 # Contributions
 
