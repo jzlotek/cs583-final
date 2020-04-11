@@ -1,7 +1,7 @@
 # Learning to See in the Dark
 
 > Joe Hines and John Zlotek
-> But based entirely on the work found [here](http://cchen156.web.engr.illinois.edu/SID.html)
+> But based entirely on the work found [here](https://github.com/cchen156/Learning-to-See-in-the-Dark)
 
 # Developers
 
